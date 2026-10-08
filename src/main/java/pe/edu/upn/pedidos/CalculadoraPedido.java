@@ -34,6 +34,10 @@ public class CalculadoraPedido {
         return redondear(baseImponible.add(igv));
     }
 
+    public BigDecimal calcularTotal(List<Producto> productos) {
+        return calcularTotal(productos, BigDecimal.ZERO);
+    }
+
     private BigDecimal redondear(BigDecimal monto) {
         return monto.setScale(2, RoundingMode.HALF_UP);
     }
