@@ -8,8 +8,12 @@ public class CalculadoraPedido {
 
     public BigDecimal calcularSubtotal(List<Producto> productos) {
         return productos.stream()
-                .map(p -> p.precio().multiply(BigDecimal.valueOf(p.cantidad())))
+                .map(this::calcularImporte)
                 .reduce(BigDecimal.ZERO, BigDecimal::add)
                 .setScale(2, RoundingMode.HALF_UP);
+    }
+
+    private BigDecimal calcularImporte(Producto producto) {
+        return producto.precio().multiply(BigDecimal.valueOf(producto.cantidad()));
     }
 }
