@@ -11,27 +11,31 @@ public class CalculadoraPedido {
 
     public BigDecimal calcularSubtotal(List<Producto> productos) {
         productos.forEach(this::validarProducto);
-        return productos.stream()
+        BigDecimal suma = productos.stream()
                 .map(this::calcularImporte)
-                .reduce(BigDecimal.ZERO, BigDecimal::add)
-                .setScale(2, RoundingMode.HALF_UP);
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        return redondear(suma);
     }
 
     public BigDecimal aplicarDescuento(BigDecimal subtotal, BigDecimal porcentaje) {
         validarPorcentaje(porcentaje);
         BigDecimal descuento = subtotal.multiply(porcentaje).divide(CIEN);
-        return subtotal.subtract(descuento).setScale(2, RoundingMode.HALF_UP);
+        return redondear(subtotal.subtract(descuento));
     }
 
     public BigDecimal calcularImpuesto(BigDecimal baseImponible) {
-        return baseImponible.multiply(TASA_IGV).setScale(2, RoundingMode.HALF_UP);
+        return redondear(baseImponible.multiply(TASA_IGV));
     }
 
     public BigDecimal calcularTotal(List<Producto> productos, BigDecimal porcentaje) {
         BigDecimal subtotal = calcularSubtotal(productos);
         BigDecimal baseImponible = aplicarDescuento(subtotal, porcentaje);
         BigDecimal igv = calcularImpuesto(baseImponible);
-        return baseImponible.add(igv).setScale(2, RoundingMode.HALF_UP);
+        return redondear(baseImponible.add(igv));
+    }
+
+    private BigDecimal redondear(BigDecimal monto) {
+        return monto.setScale(2, RoundingMode.HALF_UP);
     }
 
     private void validarProducto(Producto producto) {
