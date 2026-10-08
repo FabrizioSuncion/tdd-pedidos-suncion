@@ -26,4 +26,17 @@ class CalculadoraPedidoTest {
                 producto("Teclado", "30.00", 1));
         assertEquals(soles("80.00"), calc.calcularSubtotal(productos));
     }
+
+    @Test
+    void subtotalMultiplicaPrecioPorCantidad() {
+        List<Producto> productos = List.of(
+                producto("Cuaderno", "25.50", 2),
+                producto("Lapicero", "10.00", 3));
+        assertEquals(soles("81.00"), calc.calcularSubtotal(productos));
+    }
+
+    @Test
+    void subtotalDeListaVaciaEsCero() {
+        assertEquals(soles("0.00"), calc.calcularSubtotal(List.of()));
+    }
 }
