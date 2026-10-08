@@ -13,6 +13,11 @@ public class CalculadoraPedido {
                 .setScale(2, RoundingMode.HALF_UP);
     }
 
+    public BigDecimal aplicarDescuento(BigDecimal subtotal, BigDecimal porcentaje) {
+        BigDecimal descuento = subtotal.multiply(porcentaje).divide(new BigDecimal("100"));
+        return subtotal.subtract(descuento).setScale(2, RoundingMode.HALF_UP);
+    }
+
     private BigDecimal calcularImporte(Producto producto) {
         return producto.precio().multiply(BigDecimal.valueOf(producto.cantidad()));
     }
